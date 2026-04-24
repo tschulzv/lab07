@@ -6,7 +6,11 @@ pipeline {
     }
 
     environment {
-        NEXUS_URL = "http://localhost:8083"
+        // Forzar compatibilidad
+        DOCKER_API_VERSION = "1.42"
+        NEXUS_URL = "http://nexus:8083"
+        NEXUS_HOST = "nexus:8083"
+        NEXUS_REPO = "repository/myrepo"
         CREDENTIALS_ID = "f0142294-69d8-4e13-9215-33104e705eb6"
         IMAGE_NAME = "sumador" // Nombre de la imagen Docker
         IMAGE_TAG = "${env.BUILD_NUMBER}" // Etiqueta de la imagen basada en el número de build
@@ -46,8 +50,9 @@ pipeline {
                 script {
                   docker.withRegistry("${NEXUS_URL}", "${CREDENTIALS_ID}") {
                     def imageName = "${IMAGE_NAME}:${IMAGE_TAG}"
-                    def dockerImage = docker.build(imageName, '.')
-                    dockerImage.push()
+                    docker.withRegistry("${NEXUS_URL}", "${CREDENTIALS_ID}") {
+                        docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
+                    }
                   }
                 }
             }
