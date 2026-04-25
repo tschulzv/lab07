@@ -11,7 +11,7 @@ pipeline {
         NEXUS_URL = "http://nexus:8083"
         NEXUS_HOST = "nexus:8083"
         NEXUS_REPO = "repository/myrepo"
-        CREDENTIALS_ID = "f0142294-69d8-4e13-9215-33104e705eb6"
+        CREDENTIALS_ID = "nexus-creds"
         IMAGE_NAME = "sumador" // Nombre de la imagen Docker
         IMAGE_TAG = "${env.BUILD_NUMBER}" // Etiqueta de la imagen basada en el número de build
         ARTIFACT_ID = "elbuo8/webapp:${env.BUILD_NUMBER}"
