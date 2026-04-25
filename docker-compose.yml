@@ -13,6 +13,7 @@ services:
   jenkins-curso:
     image: docker.io/mguazzardo/pipe-seg
     restart: on-failure
+    privileged: true # Necesario para acceder al socket de Docker
     volumes:
       - jenkins-data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
