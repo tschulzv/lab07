@@ -32,6 +32,34 @@ pipeline {
                 sh "docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} npm test"
             }
         }
+
+        stage('Security: npm audit') {
+            steps {
+                echo "Scanning dependencies for vulnerabilities..."
+                sh '''
+                    npm audit --audit-level=critical || {
+                        echo "CRITICAL vulnerability found in dependencies. Failing the build."
+                        exit 1
+                    }
+                '''
+            }
+        }
+
+        stage('Security: Trivy scan') {
+            steps {
+                echo "Scanning Docker image for vulnerabilities..."
+                sh """
+                    docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        aquasec/trivy:latest \
+                        image \
+                        --severity CRITICAL \
+                        --exit-code 1 \
+                        ${NEXUS_HOST}/${IMAGE_NAME}:${IMAGE_TAG}
+                """
+            }
+        }
+
         
         stage('Tag Docker Image') {
             steps {
