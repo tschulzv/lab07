@@ -7,9 +7,9 @@ pipeline {
 
     environment {
         DOCKER_HOST = "unix:///var/run/docker.sock"
-        
-        NEXUS_URL = "http://nexus:8083"
-        NEXUS_HOST = "nexus:8083"
+    
+        NEXUS_URL = "http://host.docker.internal:8083"
+        NEXUS_HOST = "host.docker.internal:8083"
         
         CREDENTIALS_ID = "nexus-creds"          
         IMAGE_NAME = "sumador"
