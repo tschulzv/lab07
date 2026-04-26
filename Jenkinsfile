@@ -36,12 +36,12 @@ pipeline {
         stage('Security: npm audit') {
             steps {
                 echo "Scanning dependencies for vulnerabilities..."
-                sh '''
-                    npm audit --audit-level=critical || {
+                sh """
+                    docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} npm audit --audit-level=critical || {
                         echo "CRITICAL vulnerability found in dependencies. Failing the build."
                         exit 1
                     }
-                '''
+                """
             }
         }
 
@@ -55,7 +55,7 @@ pipeline {
                         image \
                         --severity CRITICAL \
                         --exit-code 1 \
-                        ${NEXUS_HOST}/${IMAGE_NAME}:${IMAGE_TAG}
+                        ${IMAGE_NAME}:${IMAGE_TAG}
                 """
             }
         }
