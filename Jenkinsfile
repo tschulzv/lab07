@@ -6,7 +6,6 @@ pipeline {
     }
 
     environment {
-        DOCKER_API_VERSION = "1.42"
         DOCKER_HOST = "unix:///var/run/docker.sock"
         
         NEXUS_URL = "http://nexus:8083"

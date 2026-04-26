@@ -1,0 +1,7 @@
+FROM jenkins/jenkins:lts-jdk21
+USER root
+RUN apt-get update && apt-get install -y docker.io
+# Cambiar el GID del grupo docker existente al GID del host
+RUN groupmod -g 1001 docker
+RUN usermod -aG docker jenkins
+USER jenkins
